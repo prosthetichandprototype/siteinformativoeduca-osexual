@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>FAQ/Fórum</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffe0e0;
+            padding-bottom: 120px; /* espaço para footer + caixa de pergunta */
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        h1 {
+            flex: 1;
+            text-align: center;
+            background-color: #ffb6b6;
+            border: 2px solid #d28a8a;
+            border-radius: 15px;
+            padding: 10px;
+            font-size: 18px;
+            color: #5a2d2d;
+        }
+
+        .faq-item {
+            background-color: #d7eaf0;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+
+        .faq-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: red;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .vote-btn {
+            cursor: pointer;
+            font-size: 18px;
+            border: none;
+            background: none;
+        }
+
+        .respostas-btn {
+            background-color: #f8bfbf;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .comentarios {
+            margin-top: 5px;
+            padding-left: 10px;
+            font-size: 14px;
+        }
+
+        .resposta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nova-pergunta {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: white;
+            position: fixed;
+            bottom: 50px; /* encosta no footer */
+            left: 0;
+            width: 100%;
+        }
+
+        .nova-pergunta input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 20px 0 0 20px;
+        }
+
+        .nova-pergunta button {
+            padding: 8px 12px;
+            border: none;
+            background-color: black;
+            color: white;
+            border-radius: 0 20px 20px 0;
+            cursor: pointer;
+        }
+
+        /* Footer padrão */
+        .footer { 
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            background-color: #e1e1e1;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            padding: 10px 0;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .footer a:nth-child(1) { background-color: #c2dbe8; }
+        .footer a:nth-child(2) { background-color: #f5d1d1; }
+        .footer a:nth-child(3) { background-color: #f1e6cc; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <button class="back-btn" onclick="location.href='index.html'">⟵</button>
+        <h1>FÓRUM DE PERGUNTAS FREQUENTES</h1>
+    </header>
+
+    <main id="faq-list"></main>
+
+    <div class="nova-pergunta">
+        <input type="text" id="novaPerguntaInput" placeholder="faça uma nova pergunta...">
+        <button onclick="adicionarPergunta()">⬆</button>
+    </div>
+
+    <footer class="footer">
+        <a href="index.html">Menu principal</a>
+        <a href="faq.html">FAQ/fórum</a>
+        <a href="sobre.html">Sobre o site</a>
+    </footer>
+
+    <script>
+        let perguntas = JSON.parse(localStorage.getItem('faqPerguntas')) || [
+            "Como é possível contrair as IST’s sem ser por meio sexual?",
+            "O que fazer em caso de uma infecção (ir ao médico? Buscar tratamento caseiro?)",
+            "O que é PrEP (Profilaxia Pré-Exposição)?",
+            "Gostaria de saber mais sobre educação sexual para pessoas LGBTQIAPN+",
+            "O que é sapinho?"
+        ];
+
+        let votos = JSON.parse(localStorage.getItem('faqVotos')) || Array(perguntas.length).fill(0);
+        let comentarios = JSON.parse(localStorage.getItem('faqComentarios')) || Array(perguntas.length).fill().map(() => []);
+
+        function salvarDados() {
+            localStorage.setItem('faqPerguntas', JSON.stringify(perguntas));
+            localStorage.setItem('faqVotos', JSON.stringify(votos));
+            localStorage.setItem('faqComentarios', JSON.stringify(comentarios));
+        }
+
+        function renderFAQ() {
+            const container = document.getElementById("faq-list");
+            container.innerHTML = "";
+            perguntas.forEach((pergunta, index) => {
+                const item = document.createElement("div");
+                item.className = "faq-item";
+                item.innerHTML = `
+                    <div class="faq-header">
+                        <div>${pergunta}</div>
+                        <button class="delete-btn" onclick="apagarPergunta(${index})">🗑️</button>
+                    </div>
+                    <div class="actions">
+                        <button class="vote-btn" onclick="upvote(${index})">⬆</button>
+                        <span>${votos[index]}</span>
+                        <button class="vote-btn" onclick="downvote(${index})">⬇</button>
+                        <button class="respostas-btn" onclick="toggleComentario(${index})">ver respostas 💬</button>
+                    </div>
+                    <div class="comentarios" id="comentarios-${index}" style="display:none;">
+                        ${comentarios[index].map((c, ci) => `
+                            <div class="resposta">
+                                <p>- ${c}</p>
+                                <button class="delete-btn" onclick="apagarResposta(${index}, ${ci})">🗑️</button>
+                            </div>
+                        `).join("")}
+                        <input type="text" id="comentarioInput-${index}" placeholder="Escreva uma resposta...">
+                        <button onclick="adicionarComentario(${index})">Enviar</button>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function upvote(i) {
+            votos[i]++;
+            salvarDados();
+            renderFAQ();
+        }
+
+        function downvote(i) {
+            votos[i]--;
+            salvarDados();
+            renderFAQ();
+        }
+
+        function adicionarPergunta() {
+            const input = document.getElementById("novaPerguntaInput");
+            if (input.value.trim() !== "") {
+                perguntas.push(input.value.trim());
+                votos.push(0);
+                comentarios.push([]);
+                salvarDados();
+                input.value = "";
+                renderFAQ();
+            }
+        }
+
+        function toggleComentario(i) {
+            const div = document.getElementById(`comentarios-${i}`);
+            div.style.display = div.style.display === "none" ? "block" : "none";
+        }
+
+        function adicionarComentario(i) {
+            const input = document.getElementById(`comentarioInput-${i}`);
+            if (input.value.trim() !== "") {
+                comentarios[i].push(input.value.trim());
+                salvarDados();
+                renderFAQ();
+            }
+        }
+
+        function apagarPergunta(i) {
+            if (confirm("Tem certeza que deseja apagar esta pergunta?")) {
+                perguntas.splice(i, 1);
+                votos.splice(i, 1);
+                comentarios.splice(i, 1);
+                salvarDados();
+                renderFAQ();
+            }
+        }
+
+        function apagarResposta(i, ci) {
+            if (confirm("Tem certeza que deseja apagar esta resposta?")) {
+                comentarios[i].splice(ci, 1);
+                salvarDados();
+                renderFAQ();
+            }
+        }
+
+        // Pressionar Enter na nova pergunta envia
+        document.getElementById("novaPerguntaInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                adicionarPergunta();
+            }
+        });
+
+        renderFAQ();
+    </script>
+
+</body>
+</html>
