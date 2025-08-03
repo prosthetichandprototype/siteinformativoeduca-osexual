@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Sintomas de IST's</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            padding-bottom: 70px; /* espaço para o footer */
+            background-color: #ffffff;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #fff3d8;
+        }
+
+        .voltar-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .search-bar {
+            flex: 1;
+            display: flex;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+        }
+
+        .search-bar button {
+            padding: 8px 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-left: none;
+            background-color: #eee;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        /* Footer no padrão solicitado */
+        .footer { 
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            background-color: #e1e1e1;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            padding: 10px 0;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .footer a:nth-child(1) { background-color: #c2dbe8; }
+        .footer a:nth-child(2) { background-color: #f5d1d1; }
+        .footer a:nth-child(3) { background-color: #f1e6cc; }
+    </style>
+</head>
+<body>
+ 
+    <header>
+        <button class="voltar-btn" onclick="window.location.href='index.html'">⟵</button>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Coloque seus sintomas aqui...">
+            <button onclick="buscarSintomas()">🔍</button>
+        </div>
+    </header>
+ 
+    <main id="resultado">
+        <!-- Resultados serão inseridos aqui via JavaScript -->
+    </main>
+ 
+    <footer class="footer">
+        <a href="index.html">Menu principal</a>
+        <a href="faq.html">FAQ/fórum</a>
+        <a href="sobre.html">Sobre o site</a>
+    </footer>
+ 
+    <script src="sintomas.js"></script>
+    <script>
+        // Detecta quando o usuário pressiona Enter no campo de busca
+        document.getElementById("searchInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // evita comportamento padrão
+                buscarSintomas(); // chama a função como se tivesse clicado na lupa
+            }
+        });
+    </script>
+</body>
+</html>
