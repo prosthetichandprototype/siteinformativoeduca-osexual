@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Menu de Saúde Sexual</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #d7eaf4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .search-bar {
+      margin: 20px;
+    }
+
+    .search-bar input {
+      width: 300px;
+      padding: 10px;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      max-width: 700px;
+      margin-bottom: 60px; /* espaço para o rodapé */
+    }
+
+    .button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+      height: 120px;
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .button:hover {
+      transform: scale(1.05);
+    }
+
+    .higiene { background-color: #f08e96; }
+    .prevencao { background-color: #9ed1f2; }
+    .distribuicao { background-color: #f8e4d0; }
+    .tratamento { background-color: #fcefd9; }
+    .contraceptivos { background-color: #f3a0aa; }
+    .postos { background-color: #8fbce8; }
+
+    .button i {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      background-color: #e1e1e1;
+      position: fixed;
+      bottom: 0;
+      padding: 10px 0;
+    }
+
+    .footer a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    .footer a:nth-child(1) { background-color: #c2dbe8; }
+    .footer a:nth-child(2) { background-color: #f5d1d1; }
+    .footer a:nth-child(3) { background-color: #f1e6cc; }
+
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="search-bar">
+    <input type="text" placeholder="Pesquisar..." />
+  </div>
+
+  <div class="grid">
+    <a href="higiene.html" class="button higiene">
+      <i class="fas fa-soap"></i>
+      Higiene Pessoal
+    </a>
+    <a href="ists.html" class="button prevencao">
+      <i class="fas fa-shield-virus"></i>
+      Informações sobre ISTs
+    </a>
+    <a href="distribuicao.html" class="button distribuicao">
+      <i class="fas fa-map-marker-alt"></i>
+      Centros de Distribuição de Preservativos
+    </a>
+    <a href="sintomas.html" class="button tratamento">
+      <i class="fas fa-syringe"></i>
+      Sintomas
+    </a>
+    <a href="contraceptivos.html" class="button contraceptivos">
+      <i class="fas fa-pills"></i>
+      Métodos Contraceptivos
+    </a>
+    <a href="postos.html" class="button postos">
+      <i class="fas fa-clinic-medical"></i>
+      Postos de Saúde e Vacinas
+    </a>
+  </div>
+
+  <div class="footer">
+    <a href="index.html">Menu principal</a>
+    <a href="faq.html">FAQ/fórum</a>
+    <a href="sobre.html">Sobre o site</a>
+    
+  </div>
+
+</body>
+</html>
